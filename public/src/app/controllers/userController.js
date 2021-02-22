@@ -43,10 +43,9 @@ router.put('/:usuarioId', async(req, res) => {
   if (nome === undefined){
 		var { email, nome, dataNascimento, telefone, endereco, cpf, permissao } = req.body
 	}
-	
 	try{
 
-    const usuario = await Usuario.findByIdAndUpdate(req.params.usuarioId).select('+senha');
+    const usuario = await Usuario.findByIdAndUpdate(req.usuarioId).select('+senha');
 
     if(usuario){
 
@@ -61,27 +60,27 @@ router.put('/:usuarioId', async(req, res) => {
         pessoa.telefone = telefone.toString()
 
         await pessoa.save()
-
         usuario.permissao = permissao
         usuario.email = email
 
         await usuario.save()
-
         usuario.senha = undefined
 
       }else{
         return res.status(400).send({
-          error: 'Falha ao editar o usuário1'
+          error: 'Falha ao editar o usuário'
         })
       }
 
     }else{
       return res.status(400).send({
-        error: 'Falha ao editar o usuário2'
+        error: 'Falha ao editar o usuário'
       })
     }
 
-		return res.send({usuario});
+		return res.send({
+      usuario,
+    });
 	
 	} catch (err){
 		return res.status(400).send({
